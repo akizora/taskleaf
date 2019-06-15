@@ -1,0 +1,15 @@
+current directory: /Users/akiyamadaiki/environment/taskleaf/vendor/bundle/gems/bindex-0.7.0/ext/skiptrace
+/Users/akiyamadaiki/.rbenv/versions/2.5.0/bin/ruby -r ./siteconf20190615-712-4b0ukr.rb extconf.rb
+creating Makefile
+
+current directory: /Users/akiyamadaiki/environment/taskleaf/vendor/bundle/gems/bindex-0.7.0/ext/skiptrace
+make "DESTDIR=" clean
+
+current directory: /Users/akiyamadaiki/environment/taskleaf/vendor/bundle/gems/bindex-0.7.0/ext/skiptrace
+make "DESTDIR="
+compiling cruby.c
+linking shared-object skiptrace/cruby.bundle
+
+current directory: /Users/akiyamadaiki/environment/taskleaf/vendor/bundle/gems/bindex-0.7.0/ext/skiptrace
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 cruby.bundle ./.gem.20190615-712-elva57/skiptrace
