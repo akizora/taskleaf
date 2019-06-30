@@ -41,7 +41,11 @@ class TasksController < ApplicationController
     end
 
     if @task.save
+      # created? creation?
       TaskMailer.creation_email(@task).deliver_now
+
+      # 7-8-2
+      SampleJob.perform_later
 
       # 5分後に送信したいとき
       # TaskMailer.creation_email(@task).deliver_later(wait: 5.minutes)
