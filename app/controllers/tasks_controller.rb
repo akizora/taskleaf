@@ -3,7 +3,14 @@ class TasksController < ApplicationController
 
   def index
     # @tasks = Task.all
-    @tasks = current_user.tasks
+    # @tasks = current_user.tasks
+    @q = current_user.tasks.ransack(params[:q])
+    @tasks = @q.result(distinct: true)
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @tasks.generate_csv, filename: "tasks-#{Time.zone.now.strftime('%Y%m%d%S')}.csv" }
+    end
   end
 
   def show
@@ -28,8 +35,18 @@ class TasksController < ApplicationController
     # @task = Task.new(task_params)
     @task = current_user.tasks.new(task_params)
 
-    if @task.save!
-      redirect_to tasks_url, notice: "タスク「#{@task.name}」を登録しました。"
+    if params[:back].present?
+      render :new
+      return
+    end
+
+    if @task.save
+      TaskMailer.creation_email(@task).deliver_now
+
+      # 5分後に送信したいとき
+      # TaskMailer.creation_email(@task).deliver_later(wait: 5.minutes)
+
+      redirect_to @task, notice: "タスク「#{@task.name}」を登録しました。"
     else
         render :new
     end
@@ -45,10 +62,20 @@ class TasksController < ApplicationController
     redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
   end
 
+  def confirm_new
+    @task = current_user.tasks.new(task_params)
+    render :new unless @task.valid?
+  end
+
+  def import
+    current_user.tasks.import(params[:file])
+    redirect_to tasks_url, notice: "タスクを追加しました"
+  end
+
   private
   
   def task_params
-    params.require(:task).permit(:name, :description)
+    params.require(:task).permit(:name, :description, :image)
   end
 
   def set_task
