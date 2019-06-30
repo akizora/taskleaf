@@ -5,7 +5,7 @@ class TasksController < ApplicationController
     # @tasks = Task.all
     # @tasks = current_user.tasks
     @q = current_user.tasks.ransack(params[:q])
-    @tasks = @q.result(distinct: true)
+    @tasks = @q.result(distinct: true).page(params[:page])
 
     respond_to do |format|
       format.html
