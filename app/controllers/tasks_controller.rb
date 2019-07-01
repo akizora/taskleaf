@@ -61,9 +61,13 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    task = Task.find(params[:id])
-    task.destroy
-    redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
+    # task = Task.find(params[:id])
+    # task.destroy
+    # ↓で書き換え
+    @task.destroy
+    # Ajax使うためにコメントアウト
+    # redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
+    head :no_content
   end
 
   def confirm_new
