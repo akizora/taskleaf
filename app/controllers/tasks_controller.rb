@@ -67,7 +67,7 @@ class TasksController < ApplicationController
     @task.destroy
     # Ajax使うためにコメントアウト
     # redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
-    head :no_content
+    # head :no_content
   end
 
   def confirm_new
