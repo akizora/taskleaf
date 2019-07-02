@@ -45,7 +45,7 @@ class TasksController < ApplicationController
       TaskMailer.creation_email(@task).deliver_now
 
       # 7-8-2
-      SampleJob.perform_later
+      # SampleJob.perform_later
 
       # 5分後に送信したいとき
       # TaskMailer.creation_email(@task).deliver_later(wait: 5.minutes)
@@ -63,10 +63,10 @@ class TasksController < ApplicationController
   def destroy
     # task = Task.find(params[:id])
     # task.destroy
-    # ↓で書き換え
+    # # ↓で書き換え
     @task.destroy
     # Ajax使うためにコメントアウト
-    # redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
+    redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
     # head :no_content
   end
 
