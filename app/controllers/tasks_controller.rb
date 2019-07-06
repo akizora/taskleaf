@@ -2,8 +2,8 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    # @tasks = Task.all
-    # @tasks = current_user.tasks
+    @tasks = Task.all
+    @tasks = current_user.tasks
     @q = current_user.tasks.ransack(params[:q])
     @tasks = @q.result(distinct: true).page(params[:page])
 
@@ -29,6 +29,16 @@ class TasksController < ApplicationController
     task = Task.find(params[:id])
     task.update!(task_params)
     redirect_to tasks_url, notice: "タスク「#{@task.name}」を更新しました。"
+  end
+
+  def destroy
+    task = Task.find(params[:id])
+    task.destroy
+    # # ↓で書き換え
+    # @task.destroy
+    # Ajax使うためにコメントアウト
+    redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
+    # head :no_content
   end
 
   def create 
@@ -58,16 +68,6 @@ class TasksController < ApplicationController
 
   def show
     @task = Task.find(params[:id])
-  end
-
-  def destroy
-    # task = Task.find(params[:id])
-    # task.destroy
-    # # ↓で書き換え
-    @task.destroy
-    # Ajax使うためにコメントアウト
-    redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
-    # head :no_content
   end
 
   def confirm_new
